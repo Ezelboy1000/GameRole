@@ -1,4 +1,4 @@
-#!/bin/env python3
+#!/usr/bin/env python3
 import discord
 from discord.utils import get
 import asyncio
@@ -8,6 +8,7 @@ import asyncio
 ############
 
 BotToken = '<Your BOT TOKEN here>'
+Prefix = "gr!"
 PlayingGame = "<Name of game>"
 PlayingRole = "<Name of role>"
 
@@ -45,7 +46,7 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    if message.content.startswith('k!help'):
+    if message.content.startswith(Prefix + 'help'):
         await message.channel.send('This is a bot written by Ezel#1995 to automagically add and remove people to the "' + PlayingRole + '" role when they start playing ' + PlayingGame + '!')
 
 client.run(BotToken)
