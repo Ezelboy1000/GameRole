@@ -26,20 +26,18 @@ async def on_ready():
 async def on_member_update(before,after):
     guild = after.guild
     role = get(guild.roles, name=PlayingRole)
-    for Bactivity in before.activities:
-        for Aactivity in after.activities:
-            if PlayingGame in str(Aactivity):
-                if PlayingGame in str(Bactivity):
-                    return
-                else:
-                    print("Adding " + str(role) + " to " + after.name)
-                    await after.add_roles(role)
-            if PlayingGame in str(Bactivity):
-                if PlayingGame in str(Aactivity):
-                    return
-                else:
-                    print("Removing " + str(role) + " from " + after.name)
-                    await after.remove_roles(role)
+    if PlayingGame in str(after.activities):
+        if PlayingGame in str(before.activities):
+            return
+        else:
+            print("Adding " + str(role) + " to " + after.name)
+            await after.add_roles(role)
+    if PlayingGame in str(before.activities):
+        if PlayingGame in str(after.activities):
+            return
+        else:
+            print("Removing " + str(role) + " from " + after.name)
+            await after.remove_roles(role)
 
 @client.event
 async def on_message(message):
