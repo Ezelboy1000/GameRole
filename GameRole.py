@@ -7,10 +7,10 @@ import asyncio
 # Settings #
 ############
 
-BotToken = '<Your BOT TOKEN here>'
+BotToken = 'Your BOT TOKEN here'
 Prefix = "gr!"
-PlayingGame = "<Name of game>"
-PlayingRole = "<Name of role>"
+PlayingGame = ["Game1", "Game2", "Game3"]
+PlayingRole = "Role name"
 
 ############
 
@@ -26,14 +26,14 @@ async def on_ready():
 async def on_member_update(before,after):
     guild = after.guild
     role = get(guild.roles, name=PlayingRole)
-    if PlayingGame in str(after.activities):
-        if PlayingGame in str(before.activities):
+    if any(str(after.activities) in search for search in PlayingGame):
+        if any(str(before.activities) in search for search in PlayingGame):
             return
         else:
             print("Adding " + str(role) + " to " + after.name)
             await after.add_roles(role)
-    if PlayingGame in str(before.activities):
-        if PlayingGame in str(after.activities):
+    if any(str(before.activities) in search for search in PlayingGame):
+        if any(str(after.activities) in search for search in PlayingGame):
             return
         else:
             print("Removing " + str(role) + " from " + after.name)
@@ -45,6 +45,7 @@ async def on_message(message):
         return
 
     if message.content.startswith(Prefix + 'help'):
-        await message.channel.send('This is a bot written by Ezel#1995 to automagically add and remove people to the "' + PlayingRole + '" role when they start playing ' + PlayingGame + '!')
+        GameList=", ".join(map(str,PlayingGame))
+        await message.channel.send('This is a bot written by Ezel#1995 to automagically add and remove people to the "' + PlayingRole + '" role when they start playing ' + GameList + '!')
 
 client.run(BotToken)
